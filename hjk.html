@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISHG 2026 - Indian Society of Human Genetics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a', // Deep Blue
+                        secondary: '#2563eb', // Brighter Blue
+                        accent: '#f59e0b', // Amber
+                        light: '#f3f4f6',
+                        dark: '#0f172a',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        .bg-pattern {
+            background-color: #1e3a8a;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .hero-bg {
+            /* DNA/Genetics Abstract Image */
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(30, 58, 138, 0.8)), url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .section-fade { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hidden-section { display: none; }
+        
+        /* Modal Styles */
+        .modal { transition: opacity 0.3s ease-in-out; pointer-events: none; opacity: 0; }
+        .modal.active { pointer-events: auto; opacity: 1; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Top Bar -->
+    <div class="bg-dark text-white text-xs py-2 hidden md:block border-b border-gray-800">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <span><i class="far fa-clock text-accent mr-1"></i> Feb 05-07, 2026</span>
+                <span class="text-gray-600">|</span>
+                <span><i class="fas fa-map-marker-alt text-accent mr-1"></i> Chandigarh, India</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="top-timer" class="text-accent font-semibold font-mono"></span>
+                <span class="text-gray-600">|</span>
+                <button onclick="toggleModal('login-modal')" class="hover:text-accent transition flex items-center"><i class="fas fa-sign-in-alt mr-1"></i> Login</button>
+                <span class="text-gray-600">|</span>
+                <button onclick="toggleModal('register-modal')" class="bg-accent text-dark px-3 py-0.5 rounded font-bold hover:bg-yellow-400 transition">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header / Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-40 backdrop-blur-md bg-opacity-95">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="showSection('home')">
+                    <div class="bg-primary text-white p-2 rounded-lg font-bold text-2xl shadow-lg group-hover:bg-secondary transition">ISHG</div>
+                    <div class="flex flex-col leading-tight">
+                        <span class="text-primary font-bold text-xl group-hover:text-secondary transition">2026</span>
+                        <span class="text-[10px] text-gray-500 font-bold tracking-widest uppercase">Indian Society of Human Genetics</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden lg:flex space-x-6 text-sm font-semibold uppercase tracking-wide">
+                    <button onclick="showSection('home')" class="nav-link text-primary border-b-2 border-primary pb-1" id="nav-home">Home</button>
+                    <button onclick="showSection('program')" class="nav-link text-gray-500 hover:text-primary transition" id="nav-program">Program</button>
+                    <button onclick="showSection('abstracts')" class="nav-link text-gray-500 hover:text-primary transition" id="nav-abstracts">Abstracts</button>
+                    <button onclick="showSection('registration')" class="nav-link text-gray-500 hover:text-primary transition" id="nav-registration">Registration</button>
+                    <button onclick="showSection('sponsorship')" class="nav-link text-gray-500 hover:text-primary transition" id="nav-sponsorship">Sponsorship</button>
+                    <button onclick="showSection('information')" class="nav-link text-gray-500 hover:text-primary transition" id="nav-information">Info</button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button class="lg:hidden text-gray-600 focus:outline-none hover:text-primary" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-100 p-4 shadow-xl absolute w-full z-50 animate-slideDown">
+            <div class="flex flex-col space-y-3">
+                <button onclick="showSection('home'); toggleMobileMenu()" class="text-left text-gray-700 hover:text-primary font-medium p-2 hover:bg-gray-50 rounded">Welcome</button>
+                <button onclick="showSection('program'); toggleMobileMenu()" class="text-left text-gray-700 hover:text-primary font-medium p-2 hover:bg-gray-50 rounded">Program</button>
+                <button onclick="showSection('abstracts'); toggleMobileMenu()" class="text-left text-gray-700 hover:text-primary font-medium p-2 hover:bg-gray-50 rounded">Abstracts</button>
+                <button onclick="showSection('registration'); toggleMobileMenu()" class="text-left text-primary font-bold p-2 bg-blue-50 rounded">Registration</button>
+                <button onclick="showSection('sponsorship'); toggleMobileMenu()" class="text-left text-gray-700 hover:text-primary font-medium p-2 hover:bg-gray-50 rounded">Sponsorship</button>
+                <button onclick="showSection('information'); toggleMobileMenu()" class="text-left text-gray-700 hover:text-primary font-medium p-2 hover:bg-gray-50 rounded">Information</button>
+                <div class="pt-3 border-t border-gray-100 flex gap-4">
+                    <button onclick="toggleModal('login-modal'); toggleMobileMenu()" class="bg-gray-100 text-gray-700 px-4 py-2 rounded text-sm w-full font-bold">Login</button>
+                    <button onclick="toggleModal('register-modal'); toggleMobileMenu()" class="bg-primary text-white px-4 py-2 rounded text-sm w-full shadow-lg font-bold">Register</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT SECTIONS -->
+
+    <!-- 1. HOME SECTION -->
+    <div id="home" class="page-section section-fade">
+        <!-- Hero -->
+        <div class="hero-bg text-white py-32 md:py-48 relative overflow-hidden flex items-center">
+            <div class="absolute inset-0 bg-black opacity-40"></div>
+            <div class="container mx-auto px-4 text-center relative z-10">
+                <span class="bg-accent text-dark text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-6 inline-block shadow-lg animate-bounce">Feb 05-07, 2026</span>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight drop-shadow-lg">
+                    Decoding Life <br> 
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-400">Transforming Health</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-200 mb-10 max-w-3xl mx-auto font-light drop-shadow-md">
+                    50th Annual Conference of the Indian Society of Human Genetics<br>
+                    <span class="text-accent font-medium mt-2 block text-lg">Chandigarh, India</span>
+                </p>
+                <div class="flex flex-col md:flex-row justify-center gap-6">
+                    <button onclick="toggleModal('register-modal')" class="bg-accent hover:bg-yellow-400 text-dark font-bold py-4 px-10 rounded-full shadow-xl transition transform hover:scale-105 flex items-center justify-center">
+                        <i class="fas fa-ticket-alt mr-2"></i> Register Now
+                    </button>
+                    <button onclick="showSection('program')" class="bg-white/10 backdrop-blur-md border border-white/30 hover:bg-white/20 text-white font-bold py-4 px-10 rounded-full transition flex items-center justify-center">
+                        <i class="fas fa-calendar-alt mr-2"></i> View Program
+                    </button>
+                </div>
+                
+                <!-- Countdown -->
+                <div class="mt-16 bg-black/30 backdrop-blur-sm p-6 rounded-2xl inline-flex flex-wrap justify-center gap-6 md:gap-12 border border-white/10">
+                    <div class="text-center min-w-[80px]">
+                        <div id="days" class="text-4xl md:text-5xl font-bold text-white mb-1">00</div>
+                        <div class="text-[10px] uppercase text-gray-300 tracking-widest">Days</div>
+                    </div>
+                    <div class="text-center min-w-[80px]">
+                        <div id="hours" class="text-4xl md:text-5xl font-bold text-white mb-1">00</div>
+                        <div class="text-[10px] uppercase text-gray-300 tracking-widest">Hours</div>
+                    </div>
+                    <div class="text-center min-w-[80px]">
+                        <div id="minutes" class="text-4xl md:text-5xl font-bold text-white mb-1">00</div>
+                        <div class="text-[10px] uppercase text-gray-300 tracking-widest">Minutes</div>
+                    </div>
+                    <div class="text-center min-w-[80px]">
+                        <div id="seconds" class="text-4xl md:text-5xl font-bold text-accent mb-1">00</div>
+                        <div class="text-[10px] uppercase text-gray-300 tracking-widest">Seconds</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Welcome Message & Highlights -->
+        <div class="py-20 bg-white">
+            <div class="container mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-6">
+                    <div class="inline-block border-l-4 border-accent pl-4">
+                        <h2 class="text-4xl font-bold text-primary">Welcome to ISHG 2026</h2>
+                        <p class="text-gray-500 font-medium mt-1">Celebrating 50 Years of Genetic Excellence</p>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-lg">
+                        It gives us immense pleasure to invite you to the golden jubilee conference of the Indian Society of Human Genetics. This year marks a significant milestone as we gather to discuss breakthrough research in genomics, personalized medicine, and genetic epidemiology.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed text-lg">
+                        Chandigarh, known for its architecture and urban design, serves as the perfect backdrop for intellectual exchange and networking. We look forward to welcoming you!
+                    </p>
+                    
+                    <div class="flex items-center gap-6 pt-4">
+                        <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-100 pr-8">
+                            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=150&h=150" class="w-14 h-14 rounded-full object-cover border-2 border-primary" alt="Chair">
+                            <div>
+                                <div class="font-bold text-dark">Dr. A. Sharma</div>
+                                <div class="text-xs text-gray-500 uppercase tracking-wide">Organising Chair</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-100 pr-8">
+                            <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=150&h=150" class="w-14 h-14 rounded-full object-cover border-2 border-primary" alt="Secretary">
+                            <div>
+                                <div class="font-bold text-dark">Dr. P. Verma</div>
+                                <div class="text-xs text-gray-500 uppercase tracking-wide">Scientific Secretary</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative group">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-primary to-blue-400 rounded-2xl opacity-20 group-hover:opacity-30 transition blur-lg"></div>
+                    <!-- Conference Hall Image -->
+                    <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="rounded-2xl shadow-2xl relative z-10 w-full object-cover h-[400px]" alt="Conference Hall">
+                    <div class="absolute bottom-6 left-6 z-20 bg-white/90 backdrop-blur px-6 py-3 rounded-lg shadow-lg">
+                        <p class="font-bold text-primary"><i class="fas fa-map-pin mr-2 text-red-500"></i> Panjab University Auditorium</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. PROGRAM SECTION (Interactive Tabs) -->
+    <div id="program" class="page-section hidden-section section-fade">
+        <div class="bg-pattern text-white py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl font-bold">Scientific Program</h1>
+                <p class="opacity-80 mt-2 text-lg">A comprehensive schedule of talks and workshops</p>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 py-12">
+            <div class="max-w-5xl mx-auto">
+                <!-- Day Tabs -->
+                <div class="flex flex-wrap border-b border-gray-200 mb-8 bg-white shadow-sm rounded-t-lg overflow-hidden">
+                    <button onclick="switchTab('day1')" id="tab-day1" class="program-tab flex-1 py-4 px-6 text-center font-bold text-primary border-b-4 border-primary bg-blue-50 transition hover:bg-blue-50">
+                        <span class="block text-sm text-gray-500 font-normal">Thursday</span>
+                        Feb 05, 2026
+                    </button>
+                    <button onclick="switchTab('day2')" id="tab-day2" class="program-tab flex-1 py-4 px-6 text-center font-bold text-gray-500 border-b-4 border-transparent hover:text-primary transition hover:bg-gray-50">
+                        <span class="block text-sm text-gray-500 font-normal">Friday</span>
+                        Feb 06, 2026
+                    </button>
+                    <button onclick="switchTab('day3')" id="tab-day3" class="program-tab flex-1 py-4 px-6 text-center font-bold text-gray-500 border-b-4 border-transparent hover:text-primary transition hover:bg-gray-50">
+                        <span class="block text-sm text-gray-500 font-normal">Saturday</span>
+                        Feb 07, 2026
+                    </button>
+                </div>
+
+                <!-- Day 1 Content -->
+                <div id="content-day1" class="program-content space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 hover:shadow-md transition">
+                        <div class="md:w-40 flex-shrink-0 flex flex-col items-center justify-center bg-blue-50 rounded-lg p-4 text-primary">
+                            <i class="fas fa-sun text-2xl mb-2"></i>
+                            <span class="font-bold text-xl">08:00 AM</span>
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="font-bold text-xl text-gray-800">Registration & Welcome Breakfast</h3>
+                            <p class="text-gray-500 mt-1"><i class="fas fa-map-marker-alt mr-1"></i> Main Foyer Area</p>
+                            <p class="mt-2 text-gray-600 text-sm">Collect your conference kits and network with early arrivals.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 hover:shadow-md transition">
+                        <div class="md:w-40 flex-shrink-0 flex flex-col items-center justify-center bg-purple-50 rounded-lg p-4 text-purple-700">
+                            <i class="fas fa-microphone-alt text-2xl mb-2"></i>
+                            <span class="font-bold text-xl">09:30 AM</span>
+                        </div>
+                        <div class="flex-grow">
+                            <span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-1 rounded mb-2 inline-block">KEYNOTE SESSION</span>
+                            <h3 class="font-bold text-xl text-gray-800">The Future of Genomics in Developing Nations</h3>
+                            <div class="flex items-center mt-3">
+                                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=100&h=100" class="w-10 h-10 rounded-full mr-3" alt="Speaker">
+                                <div>
+                                    <p class="font-semibold text-sm">Dr. Rajesh Gupta</p>
+                                    <p class="text-xs text-gray-500">Director, Institute of Genomics</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 2 Content (Hidden by default) -->
+                <div id="content-day2" class="program-content space-y-6 hidden">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 hover:shadow-md transition">
+                        <div class="md:w-40 flex-shrink-0 flex flex-col items-center justify-center bg-green-50 rounded-lg p-4 text-green-700">
+                            <i class="fas fa-flask text-2xl mb-2"></i>
+                            <span class="font-bold text-xl">10:00 AM</span>
+                        </div>
+                        <div class="flex-grow">
+                            <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded mb-2 inline-block">WORKSHOP</span>
+                            <h3 class="font-bold text-xl text-gray-800">Hands-on CRISPR Techniques</h3>
+                            <p class="text-gray-500 mt-1"><i class="fas fa-map-marker-alt mr-1"></i> Lab Complex B</p>
+                            <p class="mt-2 text-gray-600 text-sm">Limited seats. Pre-registration required.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 3 Content (Hidden by default) -->
+                <div id="content-day3" class="program-content space-y-6 hidden">
+                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 hover:shadow-md transition">
+                        <div class="md:w-40 flex-shrink-0 flex flex-col items-center justify-center bg-yellow-50 rounded-lg p-4 text-yellow-700">
+                            <i class="fas fa-award text-2xl mb-2"></i>
+                            <span class="font-bold text-xl">02:00 PM</span>
+                        </div>
+                        <div class="flex-grow">
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded mb-2 inline-block">CEREMONY</span>
+                            <h3 class="font-bold text-xl text-gray-800">Awards & Closing Ceremony</h3>
+                            <p class="text-gray-500 mt-1"><i class="fas fa-map-marker-alt mr-1"></i> Main Auditorium</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ABSTRACTS SECTION -->
+    <div id="abstracts" class="page-section hidden-section section-fade">
+        <div class="bg-pattern text-white py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl font-bold">Abstract Submission</h1>
+                <p class="opacity-80 mt-2 text-lg">Showcase your research to the global community</p>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 py-12">
+            <div class="max-w-4xl mx-auto">
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                     <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-accent">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Guidelines</h3>
+                        <ul class="space-y-3 text-gray-600 text-sm">
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i> Must be written in English.</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i> Max 250 words (excluding title).</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i> Structure: Background, Methods, Results, Conclusion.</li>
+                            <li class="flex items-start"><i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i> Deadline: Dec 15, 2025 (Strict)</li>
+                        </ul>
+                     </div>
+                     <div class="bg-blue-900 text-white p-8 rounded-xl shadow-lg relative overflow-hidden">
+                         <div class="relative z-10">
+                            <h3 class="text-2xl font-bold mb-2">Young Scientist Award</h3>
+                            <p class="text-blue-200 mb-6 text-sm">Researchers under 35 years are eligible for the prestigious award.</p>
+                            <div class="flex items-center space-x-4">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-accent">₹50k</div>
+                                    <div class="text-xs opacity-70">1st Prize</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-gray-300">₹30k</div>
+                                    <div class="text-xs opacity-70">2nd Prize</div>
+                                </div>
+                            </div>
+                         </div>
+                         <i class="fas fa-trophy absolute -bottom-4 -right-4 text-9xl text-white opacity-5 transform rotate-12"></i>
+                     </div>
+                </div>
+
+                <!-- Interactive Submission Form -->
+                <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="bg-gray-50 p-4 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="font-bold text-gray-700">Submission Portal</h3>
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Open</span>
+                    </div>
+                    <form onsubmit="event.preventDefault(); alert('Abstract Submitted Successfully! Check your email.');" class="p-8 space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Presenting Author Name</label>
+                                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Dr. John Doe">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                                <input type="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="john@university.edu">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Abstract Title</label>
+                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Enter title here...">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Abstract Body (Max 250 words)</label>
+                            <textarea rows="6" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Paste your abstract content here..."></textarea>
+                        </div>
+
+                        <div>
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="form-checkbox text-primary h-5 w-5">
+                                <span class="ml-2 text-gray-600 text-sm">Apply for Young Scientist Award (Under 35 years)</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="w-full bg-primary hover:bg-blue-800 text-white font-bold py-3 rounded-lg shadow-md transition transform hover:-translate-y-0.5">
+                            Submit Abstract
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. REGISTRATION SECTION -->
+    <div id="registration" class="page-section hidden-section section-fade">
+        <div class="bg-pattern text-white py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl font-bold">Registration</h1>
+                <p class="opacity-80 mt-2 text-lg">Secure your spot at ISHG 2026</p>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 py-12">
+            
+            <div class="bg-white rounded-xl shadow-xl overflow-hidden mb-12 border border-gray-100 max-w-5xl mx-auto">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gray-50 text-gray-700 border-b border-gray-200">
+                            <tr>
+                                <th class="px-6 py-4 font-semibold min-w-[200px]">Category</th>
+                                <th class="px-6 py-4 font-semibold min-w-[150px] bg-green-50 text-green-800 border-b-2 border-green-200">
+                                    Early Bird<br>
+                                    <span class="text-xs font-normal text-green-600">(Nov 30)</span>
+                                </th>
+                                <th class="px-6 py-4 font-semibold min-w-[150px]">Regular</th>
+                                <th class="px-6 py-4 font-semibold min-w-[150px]">On-Spot</th>
+                                <th class="px-6 py-4"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium">Research Scholar (Non-Member)</td>
+                                <td class="px-6 py-4 font-bold text-green-700">₹ 3,000</td>
+                                <td class="px-6 py-4">₹ 4,000</td>
+                                <td class="px-6 py-4">₹ 5,000</td>
+                                <td class="px-6 py-4"><button onclick="toggleModal('register-modal')" class="text-secondary hover:underline font-semibold">Select</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium">ISHG Members</td>
+                                <td class="px-6 py-4 font-bold text-green-700">₹ 5,000</td>
+                                <td class="px-6 py-4">₹ 6,000</td>
+                                <td class="px-6 py-4">₹ 7,000</td>
+                                <td class="px-6 py-4"><button onclick="toggleModal('register-modal')" class="text-secondary hover:underline font-semibold">Select</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium">Industry Delegates</td>
+                                <td class="px-6 py-4 font-bold text-green-700">₹ 10,000</td>
+                                <td class="px-6 py-4">₹ 12,000</td>
+                                <td class="px-6 py-4">₹ 14,000</td>
+                                <td class="px-6 py-4"><button onclick="toggleModal('register-modal')" class="text-secondary hover:underline font-semibold">Select</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-4 bg-yellow-50 text-center text-yellow-800 text-sm border-t border-yellow-100">
+                    <i class="fas fa-info-circle mr-1"></i> Fees include GST, Conference Kit, and Meals. Accommodation is separate.
+                </div>
+            </div>
+            
+            <div class="text-center">
+                 <button onclick="toggleModal('register-modal')" class="bg-secondary hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-full shadow-lg transform hover:-translate-y-1 transition text-lg">
+                    Proceed to Registration <i class="fas fa-arrow-right ml-2"></i>
+                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. SPONSORSHIP SECTION -->
+    <div id="sponsorship" class="page-section hidden-section section-fade">
+        <div class="bg-pattern text-white py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl font-bold">Partners & Sponsors</h1>
+                <p class="opacity-80 mt-2 text-lg">Join us in making history</p>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Platinum -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transform hover:-translate-y-2 transition duration-300">
+                    <div class="bg-gray-800 text-white text-center py-4 font-bold tracking-widest">PLATINUM</div>
+                    <div class="p-8 text-center">
+                        <div class="text-4xl font-bold text-dark mb-2">₹ 10 Lakhs</div>
+                        <p class="text-gray-500 text-sm mb-6">Exclusive Branding</p>
+                        <ul class="text-left space-y-3 mb-8 text-gray-600 text-sm">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Premium Stall (6x6m)</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 5 Complimentary Passes</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Full Page Color Ad</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 5 min Talk Slot</li>
+                        </ul>
+                        <button class="w-full border-2 border-dark text-dark font-bold py-2 rounded hover:bg-dark hover:text-white transition">Contact Us</button>
+                    </div>
+                </div>
+
+                <!-- Gold -->
+                <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-accent transform hover:-translate-y-2 transition duration-300 relative">
+                    <div class="absolute top-0 right-0 bg-accent text-white text-xs px-2 py-1">MOST POPULAR</div>
+                    <div class="bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-center py-4 font-bold tracking-widest">GOLD</div>
+                    <div class="p-8 text-center">
+                        <div class="text-4xl font-bold text-dark mb-2">₹ 5 Lakhs</div>
+                        <p class="text-gray-500 text-sm mb-6">High Visibility</p>
+                        <ul class="text-left space-y-3 mb-8 text-gray-600 text-sm">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Standard Stall (3x3m)</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 3 Complimentary Passes</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Half Page Color Ad</li>
+                        </ul>
+                        <button class="w-full bg-accent text-dark font-bold py-2 rounded hover:bg-yellow-500 transition shadow-md">Contact Us</button>
+                    </div>
+                </div>
+
+                <!-- Silver -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transform hover:-translate-y-2 transition duration-300">
+                    <div class="bg-gray-400 text-white text-center py-4 font-bold tracking-widest">SILVER</div>
+                    <div class="p-8 text-center">
+                        <div class="text-4xl font-bold text-dark mb-2">₹ 2 Lakhs</div>
+                        <p class="text-gray-500 text-sm mb-6">Standard Branding</p>
+                        <ul class="text-left space-y-3 mb-8 text-gray-600 text-sm">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Table Space</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 2 Complimentary Passes</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Logo in Souvenir</li>
+                        </ul>
+                        <button class="w-full border-2 border-gray-400 text-gray-600 font-bold py-2 rounded hover:bg-gray-400 hover:text-white transition">Contact Us</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. INFORMATION SECTION -->
+    <div id="information" class="page-section hidden-section section-fade">
+        <div class="bg-pattern text-white py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl font-bold">Plan Your Visit</h1>
+                <p class="opacity-80 mt-2 text-lg">Venue, Travel, and Stay</p>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Venue -->
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-primary border-l-4 border-accent pl-4">The Venue</h3>
+                    <div class="bg-white p-2 rounded-xl shadow-lg border border-gray-100">
+                        <!-- Static Map Image -->
+                        <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&q=80&w=1000" class="w-full h-64 object-cover rounded-lg" alt="Chandigarh City">
+                        <div class="p-4">
+                            <h4 class="font-bold text-lg">Panjab University</h4>
+                            <p class="text-gray-600">Sector 14, Chandigarh, 160014, India</p>
+                            <button class="mt-4 text-primary font-semibold hover:underline flex items-center"><i class="fas fa-directions mr-1"></i> Get Directions</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accommodation -->
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-primary border-l-4 border-accent pl-4">Accommodation</h3>
+                    <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800" class="w-full h-48 object-cover" alt="Hotel">
+                        <div class="p-6">
+                            <h4 class="font-bold text-lg mb-2">Partner Hotels</h4>
+                            <p class="text-gray-600 mb-4">We have tied up with several hotels in Sector 17 and Sector 35 for discounted rates for delegates.</p>
+                            
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-4">
+                                <h5 class="font-bold text-blue-800 text-sm flex items-center"><i class="fas fa-user-graduate mr-2"></i> Student Hostels</h5>
+                                <p class="text-sm text-blue-700 mt-1">Limited rooms available at Panjab University Hostels @ ₹500/night.</p>
+                            </div>
+                            
+                            <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2 rounded transition">View Hotel List PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden transform transition-all scale-100">
+            <div class="bg-primary p-6 text-white flex justify-between items-center">
+                <h3 class="font-bold text-xl">Delegate Login</h3>
+                <button onclick="toggleModal('login-modal')" class="hover:text-gray-300"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="p-8">
+                <form onsubmit="event.preventDefault(); toggleModal('login-modal'); alert('Logged in successfully!');">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Email / Membership ID</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fas fa-envelope"></i></span>
+                            <input type="text" class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter ID">
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary" placeholder="••••••">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-primary hover:bg-blue-800 text-white font-bold py-3 rounded transition">Login</button>
+                    <div class="mt-4 text-center">
+                        <a href="#" class="text-sm text-gray-500 hover:text-primary">Forgot Password?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden transform transition-all">
+            <div class="bg-accent p-6 text-dark flex justify-between items-center">
+                <h3 class="font-bold text-xl">New Registration</h3>
+                <button onclick="toggleModal('register-modal')" class="hover:text-white"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="p-6 max-h-[80vh] overflow-y-auto">
+                <form onsubmit="event.preventDefault(); toggleModal('register-modal'); alert('Registration initiated! Redirecting to payment...');">
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                        <input type="email" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Registration Category</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent">
+                            <option>Student / Scholar</option>
+                            <option>Faculty / ISHG Member</option>
+                            <option>Industry Delegate</option>
+                            <option>Foreign Delegate</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox text-accent h-4 w-4">
+                            <span class="ml-2 text-sm text-gray-600">I need accommodation assistance</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-dark hover:bg-gray-800 text-white font-bold py-3 rounded transition">Proceed to Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8 mt-auto border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="bg-white text-primary px-2 py-1 rounded font-bold text-lg">ISHG</div>
+                        <span class="font-bold text-xl">2026</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-sm mb-6">
+                        The 50th Annual Conference of the Indian Society of Human Genetics is dedicated to advancing the field of genetics through research, collaboration, and innovation.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-facebook-f text-sm"></i></a>
+                        <a href="#" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center hover:bg-blue-400 transition"><i class="fab fa-twitter text-sm"></i></a>
+                        <a href="#" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center hover:bg-blue-700 transition"><i class="fab fa-linkedin-in text-sm"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-6 text-white">Conference</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><button onclick="showSection('program')" class="hover:text-accent transition text-left flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2"></i> Scientific Program</button></li>
+                        <li><button onclick="showSection('abstracts')" class="hover:text-accent transition text-left flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2"></i> Submit Abstract</button></li>
+                        <li><button onclick="showSection('registration')" class="hover:text-accent transition text-left flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2"></i> Registration Fee</button></li>
+                        <li><button onclick="showSection('sponsorship')" class="hover:text-accent transition text-left flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2"></i> Sponsorship</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-6 text-white">Contact Us</h4>
+                    <ul class="space-y-4 text-sm text-gray-400">
+                        <li class="flex items-start"><i class="fas fa-envelope mt-1 mr-3 text-accent"></i> info@ishg2026.com</li>
+                        <li class="flex items-start"><i class="fas fa-phone mt-1 mr-3 text-accent"></i> +91 987 654 3210</li>
+                        <li class="flex items-start"><i class="fas fa-map-marker-alt mt-1 mr-3 text-accent"></i> Dept of Anthropology,<br>Panjab University</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center md:text-left text-xs text-gray-500 flex flex-col md:flex-row justify-between items-center">
+                <p>&copy; 2026 Indian Society of Human Genetics. All rights reserved.</p>
+                <div class="mt-4 md:mt-0">
+                    Designed for <span class="text-gray-300">Excellence</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript logic -->
+    <script>
+        // --- Navigation Logic ---
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.add('hidden-section');
+            });
+            
+            // Show target section
+            document.getElementById(sectionId).classList.remove('hidden-section');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Update Active Nav State
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('text-primary', 'border-b-2', 'border-primary');
+                link.classList.add('text-gray-500', 'hover:text-primary');
+            });
+            
+            const activeLink = document.getElementById('nav-' + sectionId);
+            if (activeLink) {
+                activeLink.classList.remove('text-gray-500', 'hover:text-primary');
+                activeLink.classList.add('text-primary', 'border-b-2', 'border-primary');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // --- Tab Switching Logic (Program) ---
+        function switchTab(dayId) {
+            // Hide all day content
+            document.querySelectorAll('.program-content').forEach(el => el.classList.add('hidden'));
+            // Show selected day
+            document.getElementById('content-' + dayId).classList.remove('hidden');
+
+            // Reset tab styles
+            document.querySelectorAll('.program-tab').forEach(tab => {
+                tab.classList.remove('text-primary', 'border-primary', 'bg-blue-50');
+                tab.classList.add('text-gray-500', 'border-transparent');
+            });
+
+            // Set active tab style
+            const activeTab = document.getElementById('tab-' + dayId);
+            activeTab.classList.remove('text-gray-500', 'border-transparent');
+            activeTab.classList.add('text-primary', 'border-primary', 'bg-blue-50');
+        }
+
+        // --- Modal Logic ---
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('active');
+        }
+
+        // --- Countdown Timer Logic ---
+        const conferenceDate = new Date("Feb 05, 2026 09:00:00").getTime();
+
+        const timerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = conferenceDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Update Main Countdown
+            const dEl = document.getElementById("days");
+            if(dEl) {
+                dEl.innerText = days < 10 ? "0" + days : days;
+                document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+                document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+                document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+            }
+
+            // Update Top Bar Tiny Countdown
+            const topTimer = document.getElementById("top-timer");
+            if(topTimer) {
+                topTimer.innerText = `${days}d : ${hours}h : ${minutes}m`;
+            }
+
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                if(dEl) document.getElementById("days").innerText = "00";
+                if(topTimer) topTimer.innerText = "Event Started";
+            }
+        }, 1000);
+
+        // Initialize Home
+        showSection('home');
+    </script>
+</body>
+</html>
